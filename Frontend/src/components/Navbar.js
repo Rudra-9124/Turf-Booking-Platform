@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -16,7 +16,8 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 import LoginDialog from '../pages/Login'; // Adjust the path accordingly
-
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
 
 const drawerWidth = 240;
 const navItems = [
@@ -27,10 +28,15 @@ const navItems = [
 
 function Navbar(props) {
   const { window } = props;
-  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [location, setLocation] = useState('Ahmedabad'); // Default location
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
+  };
+
+  const handleLocationChange = (event) => {
+    setLocation(event.target.value);
   };
 
   const drawer = (
@@ -85,7 +91,43 @@ function Navbar(props) {
           >
             TURFO
           </Typography>
-          <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+
+          <Button 
+            sx={{ 
+              ml: 2, 
+              height: '40px', 
+              display: 'flex', 
+              alignItems: 'center', 
+              color: '#ffffff', 
+              background: 'linear-gradient(45deg, #66BB6A, #4CAF50)', // Gradient background
+              borderRadius: '25px', // Rounded corners
+              boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)', // Subtle shadow
+              padding: '0 16px', // Horizontal padding
+              '&:hover': { 
+                background: 'linear-gradient(45deg, #4CAF50, #388E3C)' // Darker gradient on hover
+              }
+            }}
+          >
+            <Select
+              value={location}
+              onChange={handleLocationChange}
+              sx={{ 
+                color: '#ffffff', 
+                minWidth: '150px', // Slightly wider for better readability
+                height: '100%', 
+                fontSize: '16px', // Improved font size
+                '& .MuiSelect-icon': { color: '#ffffff' }, // White dropdown icon
+                '& .MuiOutlinedInput-notchedOutline': { border: 'none' } // Remove border
+              }} 
+              disableUnderline
+            >
+              <MenuItem value="Ahmedabad">Ahmedabad</MenuItem>
+              <MenuItem value="Mumbai">Mumbai</MenuItem>
+              <MenuItem value="Bangalore">Bangalore</MenuItem>
+            </Select>
+          </Button>
+
+          <Box sx={{ display: { xs: 'none', sm: 'block' }, ml: 2 }}>
             {navItems.map((item) => (
               <Button key={item.name} sx={{ color: '#4CAF50' }} component={Link} to={item.path}>
                 {item.name}

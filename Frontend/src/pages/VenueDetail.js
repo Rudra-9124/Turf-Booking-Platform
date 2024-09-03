@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Typography, Grid, Button, Card, CardMedia, CardContent } from '@mui/material';
+import { Box, Typography, Grid, Button, Card, CardMedia, CardContent, Breadcrumbs, Link } from '@mui/material';
 import ShareIcon from '@mui/icons-material/Share';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
@@ -45,6 +45,16 @@ const VenueDetail = () => {
       <Grid container spacing={4}>
         {/* Left Side */}
         <Grid item xs={12} md={8}>
+            {/* Breadcrumb Navigation */}
+            <Breadcrumbs aria-label="breadcrumb">
+                <Link underline="hover" color="inherit" href="/">
+                  Venues
+                </Link>
+                <Link underline="hover" color="inherit" href={`/venues/${area}`}>
+                  {area}
+                </Link>
+                <Typography color="text.primary">{name}</Typography>
+              </Breadcrumbs>
           <Box sx={{ bgcolor: '#f9f9f9', padding: 3, borderRadius: 2 }}>
             <Typography variant="h4" gutterBottom>
               {name}
