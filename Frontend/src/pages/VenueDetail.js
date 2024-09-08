@@ -6,16 +6,39 @@ import axios from 'axios';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import CheckCircleOutlineSharpIcon from '@mui/icons-material/CheckCircleOutlineSharp';
+import LeafletMap from '../components/LeafletMap'; // Adjust the path as needed
+
 
 const VenueDetail = () => {
   const { id } = useParams();
   const [venue, setVenue] = useState(null);
+  const [coordinates, setCoordinates] = useState({ latitude: 0, longitude: 0 });
+
+  const getCoordinates = async (address) => {
+    try {
+      const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`);
+      const data = await response.json();
+      if (data.length > 0) {
+        setCoordinates({
+          latitude: data[0].lat,
+          longitude: data[0].lon,
+        });
+      } else {
+        console.error('No results found');
+      }
+    } catch (error) {
+      console.error('Error fetching coordinates:', error);
+    }
+  };
+  
 
   useEffect(() => {
+    console.log("Fetching venue with id:", id);  // Debugging step
     const fetchVenue = async () => {
       try {
         const response = await axios.get(`http://127.0.0.1:8000/venue/${id}/`);
         setVenue(response.data);
+        getCoordinates(response.data.area); // Call the function with the venue's location
       } catch (error) {
         console.error('Failed to fetch venue details', error);
       }
@@ -25,7 +48,7 @@ const VenueDetail = () => {
   }, [id]);
 
   if (!venue) {
-    return <Typography>Loading...</Typography>;
+    return <Typography>Failed to load venue details. Please try again later.</Typography>;
   }
 
   const {
@@ -47,10 +70,10 @@ const VenueDetail = () => {
         <Grid item xs={12} md={8}>
             {/* Breadcrumb Navigation */}
             <Breadcrumbs aria-label="breadcrumb">
-                <Link underline="hover" color="inherit" href="/">
+                <Link underline="hover" color="inherit" href="/book">
                   Venues
                 </Link>
-                <Link underline="hover" color="inherit" href={`/venues/${area}`}>
+                <Link underline="hover" color="inherit" href={`/`}>
                   {area}
                 </Link>
                 <Typography color="text.primary">{name}</Typography>
@@ -114,6 +137,10 @@ const VenueDetail = () => {
             <Box sx={{ marginTop: 2, border: '1px solid',borderColor: '#e8e8e8', p:2, borderRadius: 3 }}>
               <Typography variant="h6">Location:</Typography>
               <Typography variant="body1">{location}</Typography>
+              <Typography></Typography>
+              {coordinates.latitude && coordinates.longitude && (
+                <LeafletMap latitude={coordinates.latitude} longitude={coordinates.longitude} />
+              )}
             </Box>
           </Box>
         </Grid>

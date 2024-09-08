@@ -9,21 +9,26 @@
     "@mui/icons-material": "^5.16.7",
     "@mui/material": "^5.16.7",
     "@mui/styled-engine-sc": "^6.0.0-alpha.18",
+    "@react-google-maps/api": "^2.19.3",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.7.5",
     "bootstrap": "^5.3.3",
     "boxicons": "^2.1.4",
+    "formik": "^2.4.6",
+    "leaflet": "^1.9.4",
     "react": "^18.3.1",
     "react-bootstrap": "^2.10.4",
     "react-dom": "^18.3.1",
+    "react-leaflet": "^4.2.1",
     "react-router-dom": "^6.26.1",
     "react-scripts": "5.0.1",
     "react-slick": "^0.30.2",
     "slick-carousel": "^1.8.1",
     "styled-components": "^6.1.12",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "yup": "^1.4.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -48,5 +53,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
   }
 }

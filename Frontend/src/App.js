@@ -6,6 +6,7 @@ import About from './pages/About';
 import Contact from './pages/Contact';
 import Home from './Home'
 import VenueDetail from './pages/VenueDetail'
+import 'leaflet/dist/leaflet.css';
 
 
 function App() {
