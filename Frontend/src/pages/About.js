@@ -6,24 +6,24 @@ import Footer from '../components/Footer';
 
 const teamMembers = [
   {
-    name: 'Rudra Patel',
+    name: 'Jignesh Solanki',
     role: 'Founder',
-    image: 'https://via.placeholder.com/150',
+    image: 'https://t4.ftcdn.net/jpg/06/40/07/03/360_F_640070383_9LJ3eTRSvOiwKyrmBYgcjhSlckDnNcxl.jpg',
   },
   {
     name: 'Aarav Kapadiya',
     role: 'Project Manager',
-    image: 'https://via.placeholder.com/150',
+    image: 'https://static.vecteezy.com/system/resources/thumbnails/037/495/402/small_2x/ai-generated-executive-arrival-confident-indian-business-professional-with-tablet-photo.jpg',
   },
   {
     name: 'Diya Vora',
     role: 'Developer',
-    image: 'https://via.placeholder.com/150',
+    image: 'https://t3.ftcdn.net/jpg/03/17/91/74/360_F_317917475_h4sM0jHpoLYNm4vfjtAL53Gx5yYWFbNn.jpg',
   },
   {
     name: 'Aisha Sharma',
     role: 'Designer',
-    image: 'https://via.placeholder.com/150',
+    image: 'https://t3.ftcdn.net/jpg/06/36/69/86/360_F_636698674_DroChEj5eWmZiaZOSDMnj8hcDqqw74Fp.jpg',
   },
 ];
 
@@ -41,7 +41,7 @@ const About = () => {
               Welcome to TurfO, your ultimate destination for booking sports turfs online!
             </Typography>
             <Box sx={{ textAlign: 'center', mb: 4 }}>
-              <SportsSoccerIcon sx={{ fontSize: 80, color: '#4CAF50' }} />
+              <SportsSoccerIcon sx={{ fontSize: 60, color: '#4CAF50' }} />
             </Box>
             <Typography variant="h5" gutterBottom>
               Our Mission

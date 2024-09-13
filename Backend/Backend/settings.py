@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-_n)89qh+lgnrh8oxfgr0gta*mctk-6o!b1cnsjxfrodeda8giy
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+# ALLOWED_HOSTS = ["*"]
 
 # Application definition
 
@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'corsheaders',
     'Venues',
+    'accounts',
 ]
 
 MIDDLEWARE = [
@@ -59,17 +60,19 @@ MIDDLEWARE = [
 
 # APPEND_SLASH = False
 
-CORS_ALLOW_ALL_ORIGINS = True
-
-# CORS_ALLOWS_CREDENTIAS = True
+CORS_ALLOW_ALL_ORIGINS = False
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+CORS_ORIGIN_WHITELIST = ( 'localhost:3000', )
+AUTH_USER_MODEL='accounts.User'
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]
+CORS_ALLOWS_CREDENTIALS = True
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
-    # "DEFAULT_PERMISSION_CLASSES": [
-    #     "rest_framework.permissions.IsAuthenticated",
-    # ],
 }
 
 SIMPLE_JWT = {
@@ -81,7 +84,6 @@ SIMPLE_JWT = {
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
-    # 'users.authentication.EmailBackend',  # Add your custom backend
 ]
 ROOT_URLCONF = 'Backend.urls'
 

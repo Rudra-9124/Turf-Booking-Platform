@@ -105,11 +105,19 @@ class VenueViewSet(generics.ListAPIView):
         """
         queryset = super().get_queryset()  # Get the initial queryset
         search = self.request.query_params.get('search', None)  # Get the 'search' parameter from the request
+        sport = self.request.query_params.get('sports', None)  # Get the 'sport' parameter
         if search:
             # Filter the queryset to match the search term in the venue name or area
             queryset = queryset.filter(
                 Q(name__icontains=search) | Q(area__icontains=search)
             )
+
+        # Filter by selected sport if provided
+        # Filter by sport if provided
+        if sport:
+            # Use icontains and add commas before and after to match sports within comma-separated values
+            queryset = queryset.filter(sports__icontains=sport)
+
         return queryset
 
 # View to return counts of venues (and can be extended for other counts)

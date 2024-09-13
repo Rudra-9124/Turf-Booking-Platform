@@ -10,3 +10,4 @@ class Venue(models.Model):
     image = models.ImageField(upload_to='venues/')
     facility = models.TextField(max_length=100)
     time = models.CharField(max_length=100)
+    sports = models.TextField(default='Cricket')

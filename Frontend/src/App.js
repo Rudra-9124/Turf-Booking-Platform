@@ -6,6 +6,8 @@ import About from './pages/About';
 import Contact from './pages/Contact';
 import Home from './Home'
 import VenueDetail from './pages/VenueDetail'
+import Login from './pages/Login'; 
+import Register from './pages/Register'; 
 import 'leaflet/dist/leaflet.css';
 
 
@@ -18,6 +20,8 @@ function App() {
          <Route path="/book" element={<Book />} />
          <Route path="/about" element={<About />} />
          <Route path="/contact" element={<Contact />} />
+         <Route path="/login" element={<Login />} />
+         <Route path="/register" element={<Register />} />
          <Route path="/venue/:id" element={<VenueDetail />} />
        </Routes>
     </Router>

@@ -1,246 +1,214 @@
-// import React, { useState } from 'react';
-// import { Dialog, DialogContent, DialogTitle, Box, Typography, TextField, Button, Grid, Link } from '@mui/material';
-// import axios from 'axios'; // Make sure to install axios
-// import SignupDialog from './Register'; // Import the SignupDialog component
+// import React from 'react';
+// import { Box, Button, TextField, Typography } from '@mui/material';
+// import { useFormik } from 'formik';
+// import * as Yup from 'yup';
 
-// const LoginDialog = ({ open, onClose }) => {
-//   const [email, setEmail] = useState('');
-//   const [password, setPassword] = useState('');
-//   const [error, setError] = useState('');
-//   const [isSignupOpen, setIsSignupOpen] = useState(false); // State to control signup dialog
+// const Login = () => {
+//   // Validation schema using Yup
+//   const validationSchema = Yup.object({
+//     email: Yup.string()
+//       .email('Enter a valid email')
+//       .required('Email is required'),
+//     password: Yup.string()
+//       .min(6, 'Password should be at least 6 characters')
+//       .required('Password is required'),
+//   });
 
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-
-//     try {
-//       // Send login request to backend
-//       const response = await axios.post('/auth/login', { email, password });
-//       const token = response.data.token; // Get the JWT token from the response
-
-//       localStorage.setItem('token', token); // Store the token in local storage
-//       console.log('Logged in successfully:', response.data);
-
-//       // Reset form fields after submission
-//       setEmail('');
-//       setPassword('');
-//       setError(''); // Clear error on successful submission
-//       onClose(); // Close login dialog
-//     } catch (err) {
-//       setError('Invalid email or password. Please try again.'); // Handle error
-//       console.error('Login failed:', err);
-//     }
-//   };
-
-//   const handleSignupOpen = () => {
-//     setIsSignupOpen(true);
-//     onClose(); // Close login dialog
-//   };
-
-//   const handleSignupClose = () => {
-//     setIsSignupOpen(false);
-//   };
+//   // Formik for handling form and validation
+//   const formik = useFormik({
+//     initialValues: {
+//       email: '',
+//       password: '',
+//     },
+//     validationSchema: validationSchema,
+//     onSubmit: (values) => {
+//       // Handle login logic here (e.g., API call)
+//       alert(JSON.stringify(values, null, 2));
+//     },
+//   });
 
 //   return (
-//     <>
-//       <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
-//         <DialogTitle sx={{ fontSize: '24px', fontWeight: 'bold' }}>Login</DialogTitle>
-//         <DialogContent>
-//           <Grid container spacing={2}>
-//             {/* Left Side - Image */}
-//             <Grid item xs={12} md={7}>
-//               <Box
-//                 sx={{
-//                   backgroundImage: 'url(https://imgcdn.stablediffusionweb.com/2024/4/17/4e492bff-bdad-4eb6-bde9-f3d8934ce57f.jpg)',
-//                   backgroundSize: 'cover',
-//                   height: { xs: 300, md: 500 }, // Responsive height
-//                   borderRadius: 2,
-//                 }}
-//               />
-//             </Grid>
-
-//             {/* Right Side - Login Form */}
-//             <Grid item xs={12} md={5}>
-//               <Box component="form" onSubmit={handleSubmit}>
-//                 <Typography variant="h6">Login with Email</Typography>
-//                 {error && <Typography color="error">{error}</Typography>} {/* Display error message */}
-//                 <TextField
-//                   fullWidth
-//                   label="Email"
-//                   variant="outlined"
-//                   value={email}
-//                   onChange={(e) => setEmail(e.target.value)}
-//                   sx={{ marginTop: 2 }}
-//                   required
-//                 />
-//                 <TextField
-//                   fullWidth
-//                   label="Password"
-//                   variant="outlined"
-//                   type="password"
-//                   value={password}
-//                   onChange={(e) => setPassword(e.target.value)}
-//                   sx={{ marginTop: 2 }}
-//                   required
-//                 />
-//                 <Button
-//                   type="submit"
-//                   variant="contained"
-//                   color="primary"
-//                   fullWidth
-//                   sx={{ marginTop: 2 }}
-//                 >
-//                   Login
-//                 </Button>
-//                 <Typography align="center" sx={{ marginTop: 3 }}>
-//                   Don't have an account?{' '}
-//                   <Link href="#" onClick={handleSignupOpen} underline="hover">
-//                     Sign up now
-//                   </Link>
-//                 </Typography>
-//               </Box>
-//             </Grid>
-//           </Grid>
-//         </DialogContent>
-//       </Dialog>
-//       <SignupDialog open={isSignupOpen} onClose={handleSignupClose} />
-//     </>
+//     <Box sx={{ maxWidth: 400, mx: 'auto', mt: 30, boxShadow: 2, p: 4 }}>
+//       <Typography variant="h5" component="h1" mb={2} textAlign="center">
+//         Login
+//       </Typography>
+//       <form onSubmit={formik.handleSubmit}>
+//         <TextField
+//           label="Email"
+//           variant="outlined"
+//           fullWidth
+//           margin="normal"
+//           id="email"
+//           name="email"
+//           value={formik.values.email}
+//           onChange={formik.handleChange}
+//           onBlur={formik.handleBlur}
+//           error={formik.touched.email && Boolean(formik.errors.email)}
+//           helperText={formik.touched.email && formik.errors.email}
+//         />
+//         <TextField
+//           label="Password"
+//           variant="outlined"
+//           fullWidth
+//           margin="normal"
+//           id="password"
+//           name="password"
+//           type="password"
+//           value={formik.values.password}
+//           onChange={formik.handleChange}
+//           onBlur={formik.handleBlur}
+//           error={formik.touched.password && Boolean(formik.errors.password)}
+//           helperText={formik.touched.password && formik.errors.password}
+//         />
+//         <Button
+//           variant="contained"
+//           color="primary"
+//           fullWidth
+//           type="submit"
+//           sx={{ mt: 2 }}
+//         >
+//           Login
+//         </Button>
+//       </form>
+//     </Box>
 //   );
 // };
 
-// export default LoginDialog;
+// export default Login;
 
-import React, {useState} from 'react';
-import { Dialog, DialogContent, DialogTitle, Box, Typography, TextField, Button, Grid, Link } from '@mui/material';
-import { useFormik } from 'formik';
+
+import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import {
+    Box,
+    Button,
+    Checkbox,
+    FormControlLabel,
+    TextField,
+    Typography,
+    Grid,
+    Paper,
+} from '@mui/material';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import axios from 'axios'; // Make sure to install axios
-import SignupDialog from './Register'; // Import the SignupDialog component
 
-const LoginDialog = ({ open, onClose }) => {
-  const [isSignupOpen, setIsSignupOpen] = useState(false); // State to control signup dialog
+// Validation schema using Yup
+const validationSchema = Yup.object().shape({
+    email: Yup.string()
+        .email('Invalid email format')
+        .required('Email is required'),
+    password: Yup.string()
+        .required('Password is required'),
+});
 
-  // Validation schema using Yup
-  const validationSchema = Yup.object({
-    email: Yup.string().email('Invalid email format').required('Email is required'),
-    password: Yup.string().min(6, 'Password should be at least 6 characters').required('Password is required'),
-  });
+const Login = () => {
+    const navigate = useNavigate();
 
-  // Formik hook to handle form state and validation
-  const formik = useFormik({
-    initialValues: {
-      email: '',
-      password: '',
-    },
-    validationSchema: validationSchema,
-    onSubmit: async (values, { resetForm }) => {
-      try {
-        // Send login request to backend
-        const response = await axios.post('/auth/login', values);
-        const token = response.data.token; // Get the JWT token from the response
+    const handleSubmit = async (values, { setSubmitting, setErrors }) => {
+        try {
+            const response = await axios.post('http://localhost:8000/auth/login/', {
+                email: values.email,
+                password: values.password,
+            }, {
+                withCredentials: true,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            console.log('Login successful:', response.data);
+            navigate('/dashboard');
+        } catch (error) {
+            console.error('Login error:', error);
+            setErrors({ email: 'Invalid username or password.' });
+        } finally {
+            setSubmitting(false);
+        }
+    };
 
-        localStorage.setItem('token', token); // Store the token in local storage
-        console.log('Logged in successfully:', response.data);
-
-        // Reset form fields after submission
-        resetForm();
-        onClose(); // Close login dialog
-      } catch (err) {
-        formik.setFieldError('general', 'Invalid email or password. Please try again.');
-        console.error('Login failed:', err);
-      }
-    },
-  });
-
-  const handleSignupOpen = () => {
-    setIsSignupOpen(true);
-    onClose(); // Close login dialog
-  };
-
-  const handleSignupClose = () => {
-    setIsSignupOpen(false);
-  };
-
-  return (
-    <>
-      <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
-        <DialogTitle sx={{ fontSize: '24px', fontWeight: 'bold' }}>Login</DialogTitle>
-        <DialogContent>
-          <Grid container spacing={2}>
-            {/* Left Side - Image */}
-            <Grid item xs={12} md={7}>
-              <Box
-                sx={{
-                  backgroundImage: 'url(https://imgcdn.stablediffusionweb.com/2024/4/17/4e492bff-bdad-4eb6-bde9-f3d8934ce57f.jpg)',
-                  backgroundSize: 'cover',
-                  height: { xs: 300, md: 500 }, // Responsive height
-                  borderRadius: 2,
-                }}
-              />
+    return (
+        <Grid container justifyContent="center" alignItems="center" style={{ minHeight: '100vh', backgroundColor: '#f0f4f8' }}>
+            <Grid item xs={12} sm={8} md={4}>
+                <Paper elevation={3} style={{ padding: '20px' }}>
+                    <Box textAlign="center" mb={2}>
+                        {/* Logo or Icon */}
+          
+                    </Box>
+                    <Typography variant="h5" component="h2" textAlign="center" gutterBottom>
+                        Log in
+                    </Typography>
+                    <Formik
+                        initialValues={{ email: '', password: '' }}
+                        validationSchema={validationSchema}
+                        onSubmit={handleSubmit}
+                    >
+                        {({ isSubmitting }) => (
+                            <Form>
+                                <Field name="email">
+                                    {({ field, meta }) => (
+                                        <TextField
+                                            {...field}
+                                            label="Email"
+                                            variant="outlined"
+                                            fullWidth
+                                            margin="normal"
+                                            error={meta.touched && Boolean(meta.error)}
+                                            helperText={meta.touched && meta.error}
+                                        />
+                                    )}
+                                </Field>
+                                <Field name="password">
+                                    {({ field, meta }) => (
+                                        <TextField
+                                            {...field}
+                                            label="Password"
+                                            type="password"
+                                            variant="outlined"
+                                            fullWidth
+                                            margin="normal"
+                                            error={meta.touched && Boolean(meta.error)}
+                                            helperText={meta.touched && meta.error}
+                                        />
+                                    )}
+                                </Field>
+                                <FormControlLabel
+                                    control={
+                                        <Field
+                                            name="rememberMe"
+                                            as={Checkbox}
+                                            color="primary"
+                                        />
+                                    }
+                                    label="Remember me"
+                                />
+                                <Grid container justifyContent="space-between">
+                                    <Link to="#" style={{ textDecoration: 'none', color: '#1976d2' }}>
+                                        Forgot your password?
+                                    </Link>
+                                </Grid>
+                                <Button
+                                    type="submit"
+                                    variant="contained"
+                                    color="primary"
+                                    fullWidth
+                                    style={{ marginTop: '16px' }}
+                                    disabled={isSubmitting}
+                                >
+                                    Sign in
+                                </Button>
+                            </Form>
+                        )}
+                    </Formik>
+                    <Typography variant="body2" align="center" style={{ marginTop: '16px' }}>
+                        Don't have an account? 
+                        <Link to="/register" style={{ textDecoration: 'none', color: '#1976d2' }}>
+                            Register
+                        </Link>
+                    </Typography>
+                </Paper>
             </Grid>
-
-            {/* Right Side - Login Form */}
-            <Grid item xs={12} md={5}>
-              <Box component="form" onSubmit={formik.handleSubmit}>
-                <Typography variant="h6">Login with Email</Typography>
-
-                {/* General error message */}
-                {formik.errors.general && (
-                  <Typography color="error" align="center">
-                    {formik.errors.general}
-                  </Typography>
-                )}
-
-                <TextField
-                  fullWidth
-                  label="Email"
-                  variant="outlined"
-                  name="email"
-                  value={formik.values.email}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  error={formik.touched.email && Boolean(formik.errors.email)}
-                  helperText={formik.touched.email && formik.errors.email}
-                  sx={{ marginTop: 2 }}
-                />
-
-                <TextField
-                  fullWidth
-                  label="Password"
-                  variant="outlined"
-                  type="password"
-                  name="password"
-                  value={formik.values.password}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  error={formik.touched.password && Boolean(formik.errors.password)}
-                  helperText={formik.touched.password && formik.errors.password}
-                  sx={{ marginTop: 2 }}
-                />
-
-                <Button
-                  type="submit"
-                  variant="contained"
-                  color="primary"
-                  fullWidth
-                  sx={{ marginTop: 2 }}
-                >
-                  Login
-                </Button>
-
-                <Typography align="center" sx={{ marginTop: 3 }}>
-                  Don't have an account?{' '}
-                  <Link href="#" onClick={handleSignupOpen} underline="hover">
-                    Sign up now
-                  </Link>
-                </Typography>
-              </Box>
-            </Grid>
-          </Grid>
-        </DialogContent>
-      </Dialog>
-      <SignupDialog open={isSignupOpen} onClose={handleSignupClose} />
-    </>
-  );
+        </Grid>
+    );
 };
 
-export default LoginDialog;
+export default Login;

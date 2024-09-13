@@ -21,7 +21,7 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('Venues.urls')),  # Include URLs from the Venues app
-    # path('auth/', include('accounts.urls')),  # Include URLs from the authentication app
+    path('auth/', include('accounts.urls')),  # Include URLs from the authentication app
 ]
 
 from django.conf import settings
