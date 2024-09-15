@@ -20,8 +20,9 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('Venues.urls')),  # Include URLs from the Venues app
-    path('auth/', include('accounts.urls')),  # Include URLs from the authentication app
+    path('', include('Venues.urls')),  
+    path('auth/', include('accounts.urls')), 
+    path('booking/', include('Booking.urls')), 
 ]
 
 from django.conf import settings

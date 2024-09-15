@@ -15,7 +15,6 @@
 // import Typography from '@mui/material/Typography';
 // import Button from '@mui/material/Button';
 // import { Link } from 'react-router-dom';
-// import LoginDialog from '../pages/Login'; // Adjust the path accordingly
 // import Select from '@mui/material/Select';
 // import MenuItem from '@mui/material/MenuItem';
 
@@ -60,20 +59,10 @@
 
 //   const container = window !== undefined ? () => window().document.body : undefined;
 
-//   const [openDialog, setOpenDialog] = useState(false);
-
-//   const handleDialogOpen = () => {
-//     setOpenDialog(true);
-//   };
-
-//   const handleDialogClose = () => {
-//     setOpenDialog(false);
-//   };
-
 //   return (
 //     <Box sx={{ display: 'flex' }}>
 //       <CssBaseline />
-//       <AppBar component="nav" position='fixed' sx={{ bgcolor: '#ffff', color: '#4CAF50', p: 1.5, boxShadow: 'none', opacity: 1 }}>
+//       <AppBar component="nav" position='fixed' sx={{ bgcolor: '#fff', color: '#4CAF50', boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)' }}>
 //         <Toolbar>
 //           <IconButton
 //             color="inherit"
@@ -93,49 +82,31 @@
 //             TURFO
 //           </Typography>
 
-//           <Button 
-//             sx={{ 
-//               ml: 2, 
-//               height: '40px', 
-//               display: 'flex', 
-//               alignItems: 'center', 
-//               color: '#ffffff', 
-//               background: 'linear-gradient(45deg, #66BB6A, #4CAF50)', 
-//               borderRadius: '25px', 
-//               padding: '0 16px',
-//               '&:hover': { 
-//                 background: 'linear-gradient(45deg, #4CAF50, #388E3C)' 
-//               }
-//             }}
-//           >
+//           <Box sx={{ display: 'flex', alignItems: 'center' }}>
 //             <Select
 //               value={location}
 //               onChange={handleLocationChange}
-//               sx={{ 
-//                 color: '#ffffff', 
+//               sx={{
+//                 color: '#4CAF50',
 //                 minWidth: '150px',
-//                 height: '100%', 
-//                 fontSize: '16px', 
-//                 '& .MuiSelect-icon': { color: '#ffffff' },
-//                 '& .MuiOutlinedInput-notchedOutline': { border: 'none' }
-//               }} 
-//               disableUnderline
+//                 height: '40px',
+//                 fontSize: '16px',
+//                 '& .MuiSelect-icon': { color: '#4CAF50' },
+//                 '& .MuiOutlinedInput-notchedOutline': { border: '1px solid #4CAF50' }
+//               }}
 //             >
 //               <MenuItem value="Ahmedabad">Ahmedabad</MenuItem>
 //               <MenuItem value="Mumbai">Mumbai</MenuItem>
 //               <MenuItem value="Bangalore">Bangalore</MenuItem>
 //             </Select>
-//           </Button>
-
-//           <Box sx={{ display: { xs: 'none', sm: 'block' }, ml: 2 }}>
-//             {navItems.map((item) => (
-//               <Button key={item.name} sx={{ color: '#4CAF50' }} component={Link} to={item.path}>
-//                 {item.name}
-//               </Button>
-//             ))}
-//           </Box>
-//           <Box>
-//             <Button component={Link} to="/login" variant="outlined">
+//             <Box sx={{ ml: 2 }}>
+//               {navItems.map((item) => (
+//                 <Button key={item.name} sx={{ color: '#4CAF50', '&:hover': { backgroundColor: '#E8E8E8' } }} component={Link} to={item.path}>
+//                   {item.name}
+//                 </Button>
+//               ))}
+//             </Box>
+//             <Button component={Link} to="/login" variant="outlined" sx={{ marginLeft: 2, borderColor: '#4CAF50', color: '#4CAF50', '&:hover': { borderColor: '#388E3C', backgroundColor: '#E8E8E8' } }}>
 //               Login
 //             </Button>
 //           </Box>
@@ -158,7 +129,7 @@
 //           {drawer}
 //         </Drawer>
 //       </nav>
-//       <Box component="main" sx={{ p: 2, mt: '55px' }}>
+//       <Box component="main" sx={{ p: 2, mt: '40px' }}>
 //         {/* Your page content will go here */}
 //       </Box>
 //     </Box>
@@ -187,7 +158,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 
@@ -201,6 +172,8 @@ const navItems = [
 function Navbar({ onLocationChange, window }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [location, setLocation] = useState('Ahmedabad'); // Default location
+  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('token')); // Check if user is logged in based on token
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
@@ -210,6 +183,14 @@ function Navbar({ onLocationChange, window }) {
     const selectedLocation = event.target.value;
     setLocation(selectedLocation);
     onLocationChange(selectedLocation); // Call the callback to notify parent component
+  };
+
+  const handleLogout = () => {
+    // Clear the token from localStorage
+    localStorage.removeItem('token');
+    localStorage.removeItem('username');
+    setIsLoggedIn(false);
+    navigate('/'); // Optionally navigate to home page after logout
   };
 
   const drawer = (
@@ -235,7 +216,7 @@ function Navbar({ onLocationChange, window }) {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar component="nav" position='fixed' sx={{ bgcolor: '#ffff', color: '#4CAF50', p: 1.5, boxShadow: 'none', opacity: 1 }}>
+      <AppBar component="nav" position='fixed' sx={{ bgcolor: '#fff', color: '#4CAF50', boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)' }}>
         <Toolbar>
           <IconButton
             color="inherit"
@@ -255,51 +236,58 @@ function Navbar({ onLocationChange, window }) {
             TURFO
           </Typography>
 
-          <Button 
-            sx={{ 
-              ml: 2, 
-              height: '40px', 
-              display: 'flex', 
-              alignItems: 'center', 
-              color: '#ffffff', 
-              background: 'linear-gradient(45deg, #66BB6A, #4CAF50)', 
-              borderRadius: '25px', 
-              padding: '0 16px',
-              '&:hover': { 
-                background: 'linear-gradient(45deg, #4CAF50, #388E3C)' 
-              }
-            }}
-          >
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Select
               value={location}
               onChange={handleLocationChange}
-              sx={{ 
-                color: '#ffffff', 
+              sx={{
+                color: '#4CAF50',
                 minWidth: '150px',
-                height: '100%', 
-                fontSize: '16px', 
-                '& .MuiSelect-icon': { color: '#ffffff' },
-                '& .MuiOutlinedInput-notchedOutline': { border: 'none' }
-              }} 
-              disableUnderline
+                height: '40px',
+                fontSize: '16px',
+                '& .MuiSelect-icon': { color: '#4CAF50' },
+                '& .MuiOutlinedInput-notchedOutline': { border: '1px solid #4CAF50' }
+              }}
             >
               <MenuItem value="Ahmedabad">Ahmedabad</MenuItem>
               <MenuItem value="Mumbai">Mumbai</MenuItem>
               <MenuItem value="Bangalore">Bangalore</MenuItem>
             </Select>
-          </Button>
-
-          <Box sx={{ display: { xs: 'none', sm: 'block' }, ml: 2 }}>
-            {navItems.map((item) => (
-              <Button key={item.name} sx={{ color: '#4CAF50' }} component={Link} to={item.path}>
-                {item.name}
+            <Box sx={{ ml: 2 }}>
+              {navItems.map((item) => (
+                <Button key={item.name} sx={{ color: '#4CAF50', '&:hover': { backgroundColor: '#E8E8E8' } }} component={Link} to={item.path}>
+                  {item.name}
+                </Button>
+              ))}
+            </Box>
+            {isLoggedIn ? (
+              <Button
+                onClick={handleLogout}
+                variant="outlined"
+                sx={{
+                  marginLeft: 2,
+                  borderColor: '#4CAF50',
+                  color: '#4CAF50',
+                  '&:hover': { borderColor: '#388E3C', backgroundColor: '#E8E8E8' }
+                }}
+              >
+                Logout
               </Button>
-            ))}
-          </Box>
-          <Box>
-            <Button component={Link} to="/login" variant="outlined">
-              Login
-            </Button>
+            ) : (
+              <Button
+                component={Link}
+                to="/login"
+                variant="outlined"
+                sx={{
+                  marginLeft: 2,
+                  borderColor: '#4CAF50',
+                  color: '#4CAF50',
+                  '&:hover': { borderColor: '#388E3C', backgroundColor: '#E8E8E8' }
+                }}
+              >
+                Login
+              </Button>
+            )}
           </Box>
         </Toolbar>
       </AppBar>
@@ -320,7 +308,7 @@ function Navbar({ onLocationChange, window }) {
           {drawer}
         </Drawer>
       </nav>
-      <Box component="main" sx={{ p: 2, mt: '55px' }}>
+      <Box component="main" sx={{ p: 2, mt: '40px' }}>
         {/* Your page content will go here */}
       </Box>
     </Box>

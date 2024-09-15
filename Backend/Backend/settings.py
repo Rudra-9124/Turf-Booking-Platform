@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-_n)89qh+lgnrh8oxfgr0gta*mctk-6o!b1cnsjxfrodeda8giy
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'Venues',
     'accounts',
+    'Booking',
 ]
 
 MIDDLEWARE = [
@@ -58,33 +59,29 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# APPEND_SLASH = False
+CORS_ALLOW_ALL_ORIGINS = True  # Allow requests from any origin
 
-CORS_ALLOW_ALL_ORIGINS = False
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-CORS_ORIGIN_WHITELIST = ( 'localhost:3000', )
-AUTH_USER_MODEL='accounts.User'
+CORS_ALLOW_CREDENTIALS = True  # Allow credentials (cookies or tokens)
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
+    'http://localhost:3000',
 ]
-CORS_ALLOWS_CREDENTIALS = True
 
 REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES": (
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
 }
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 }
-
-# AUTH_USER_MODEL = 'users.CustomUser'
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
+    'rest_framework_simplejwt.authentication.JWTAuthentication',
 ]
+
 ROOT_URLCONF = 'Backend.urls'
 
 TEMPLATES = [
