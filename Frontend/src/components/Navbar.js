@@ -14,9 +14,10 @@
 // import Toolbar from '@mui/material/Toolbar';
 // import Typography from '@mui/material/Typography';
 // import Button from '@mui/material/Button';
-// import { Link } from 'react-router-dom';
+// import { Link, useNavigate } from 'react-router-dom';
 // import Select from '@mui/material/Select';
 // import MenuItem from '@mui/material/MenuItem';
+// import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 // const drawerWidth = 240;
 // const navItems = [
@@ -28,6 +29,8 @@
 // function Navbar({ onLocationChange, window }) {
 //   const [mobileOpen, setMobileOpen] = useState(false);
 //   const [location, setLocation] = useState('Ahmedabad'); // Default location
+//   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('token')); // Check if user is logged in based on token
+//   const navigate = useNavigate(); // Initialize useNavigate
 
 //   const handleDrawerToggle = () => {
 //     setMobileOpen((prevState) => !prevState);
@@ -37,6 +40,14 @@
 //     const selectedLocation = event.target.value;
 //     setLocation(selectedLocation);
 //     onLocationChange(selectedLocation); // Call the callback to notify parent component
+//   };
+
+//   const handleLogout = () => {
+//     // Clear the token from localStorage
+//     localStorage.removeItem('token');
+//     localStorage.removeItem('username');
+//     setIsLoggedIn(false);
+//     navigate('/'); // Optionally navigate to home page after logout
 //   };
 
 //   const drawer = (
@@ -106,9 +117,37 @@
 //                 </Button>
 //               ))}
 //             </Box>
-//             <Button component={Link} to="/login" variant="outlined" sx={{ marginLeft: 2, borderColor: '#4CAF50', color: '#4CAF50', '&:hover': { borderColor: '#388E3C', backgroundColor: '#E8E8E8' } }}>
-//               Login
-//             </Button>
+//             {isLoggedIn ? (
+//               <>
+//                 {/* <Button
+//                   onClick={handleLogout}
+//                   variant="outlined"
+//                   sx={{
+//                     marginLeft: 2,
+//                     borderColor: '#4CAF50',
+//                     color: '#4CAF50',
+//                     '&:hover': { borderColor: '#388E3C', backgroundColor: '#E8E8E8' }
+//                   }}
+//                 >
+//                   Logout
+//                 </Button> */}
+//                 <AccountCircleIcon fontSize="large" />
+//               </>
+//             ) : (
+//               <Button
+//                 component={Link}
+//                 to="/login"
+//                 variant="outlined"
+//                 sx={{
+//                   marginLeft: 2,
+//                   borderColor: '#4CAF50',
+//                   color: '#4CAF50',
+//                   '&:hover': { borderColor: '#388E3C', backgroundColor: '#E8E8E8' }
+//                 }}
+//               >
+//                 Login
+//               </Button>
+//             )}
 //           </Box>
 //         </Toolbar>
 //       </AppBar>
@@ -142,6 +181,7 @@
 
 // export default Navbar;
 
+
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import AppBar from '@mui/material/AppBar';
@@ -161,6 +201,8 @@ import Button from '@mui/material/Button';
 import { Link, useNavigate } from 'react-router-dom';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import Menu from '@mui/material/Menu';
 
 const drawerWidth = 240;
 const navItems = [
@@ -174,6 +216,9 @@ function Navbar({ onLocationChange, window }) {
   const [location, setLocation] = useState('Ahmedabad'); // Default location
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('token')); // Check if user is logged in based on token
   const navigate = useNavigate(); // Initialize useNavigate
+
+  // State for menu anchor
+  const [anchorEl, setAnchorEl] = useState(null);
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
@@ -191,6 +236,16 @@ function Navbar({ onLocationChange, window }) {
     localStorage.removeItem('username');
     setIsLoggedIn(false);
     navigate('/'); // Optionally navigate to home page after logout
+  };
+
+  // Handle click to open the user menu
+  const handleMenuClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  // Handle closing the user menu
+  const handleCloseMenu = () => {
+    setAnchorEl(null);
   };
 
   const drawer = (
@@ -261,18 +316,24 @@ function Navbar({ onLocationChange, window }) {
               ))}
             </Box>
             {isLoggedIn ? (
-              <Button
-                onClick={handleLogout}
-                variant="outlined"
-                sx={{
-                  marginLeft: 2,
-                  borderColor: '#4CAF50',
-                  color: '#4CAF50',
-                  '&:hover': { borderColor: '#388E3C', backgroundColor: '#E8E8E8' }
-                }}
-              >
-                Logout
-              </Button>
+              <>
+                <IconButton onClick={handleMenuClick}>
+                  <AccountCircleIcon fontSize="large" />
+                </IconButton>
+                <Menu
+                  anchorEl={anchorEl}
+                  open={Boolean(anchorEl)}
+                  onClose={handleCloseMenu}
+                  sx={{ p:4 }}
+                >
+                  <MenuItem onClick={handleCloseMenu}>
+                    <Link to="/profile" style={{ textDecoration: 'none', color: '#000' }}>Profile</Link>
+                  </MenuItem>
+                  <MenuItem onClick={() => { handleLogout(); handleCloseMenu(); }}>
+                    Logout
+                  </MenuItem>
+                </Menu>
+              </>
             ) : (
               <Button
                 component={Link}

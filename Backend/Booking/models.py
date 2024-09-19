@@ -12,4 +12,4 @@ class Booking(models.Model):
     email = models.EmailField(blank=True, null=True)
     
     def __str__(self):
-        return f"{self.user.username} - {self.venue_name} - {self.sport}"
+        return f"{self.user} - {self.venue_name} - {self.sport}"

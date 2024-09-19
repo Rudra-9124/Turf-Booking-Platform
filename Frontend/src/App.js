@@ -11,6 +11,7 @@ import Register from './pages/Register';
 import Payment from './pages/Payment'; 
 import 'leaflet/dist/leaflet.css';
 import Review from './pages/Review'
+import Profile from './pages/Profile'
 
 function App() {
   const [user, setUser] = useState(null);
@@ -28,7 +29,7 @@ function App() {
   return (
     <Router>
        <Routes>
-         <Route path="/" element={<Home user={user} />} />
+         <Route path="/" element={<Home />} />
          <Route path="/play" element={<Play />} />
          <Route path="/book" element={<Book />} />
          <Route path="/about" element={<About />} />
@@ -37,7 +38,8 @@ function App() {
          <Route path="/register" element={<Register />} />
          <Route path="/venue/:id" element={<VenueDetail />} />
          <Route path="/payment" element={<Payment />} />
-         <Route path="/review" element={<Review />} />
+         <Route path="/review" element={<Review user={user} />} />
+         <Route path="/profile" element={<Profile user={user} />} />
        </Routes>
     </Router>
   );
