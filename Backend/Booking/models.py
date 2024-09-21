@@ -1,6 +1,5 @@
 # models.py
 from django.db import models
-from django.contrib.auth.models import User  # Assuming you are using Django's built-in User model
 
 class Booking(models.Model):
     user = models.CharField(max_length=100, blank=True, null=True)

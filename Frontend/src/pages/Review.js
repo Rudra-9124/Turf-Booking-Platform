@@ -1,26 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import {
-  Box,
-  Typography,
-  CircularProgress,
-  TextField,
-  MenuItem,
-  Button,
-  Grid,
-  Paper,
-} from '@mui/material';
+import { Box, Typography, CircularProgress, TextField, MenuItem, Button, Grid, Paper } from '@mui/material';
 import { motion } from 'framer-motion';
 import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import { DatePicker } from '@mui/x-date-pickers'; // Update import
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'; // Update import
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'; // Update import
+import { DatePicker } from '@mui/x-date-pickers'; 
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'; 
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'; 
 import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import jwtDecode from 'jwt-decode';
-
 
 const VenueReviewPage = () => {
   const [loading, setLoading] = useState(true);
@@ -76,21 +65,8 @@ const VenueReviewPage = () => {
         email: userdata.email, 
       };
       console.log(bookingData);  // Log the data before making the request
-  
-      try {
-        const response = await axios.post('http://localhost:8000/booking/', bookingData, {
-          withCredentials: true,
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-              // Add token if required
-          }
-        });
-        alert('Booking successful!');
-        navigate('/payment');
-      } catch (error) {
-        console.error('There was an error booking the venue:', error.response.data);
-      }
+
+      navigate('/payment', {state: {bookingData}})
     } else {
       alert('Please select a sport, time, and date.');
     }

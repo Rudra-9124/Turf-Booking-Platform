@@ -1,165 +1,166 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { TextField, Button, Typography, Box, Link as MuiLink } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
-import { Grid, Box, TextField, Button, Typography } from '@mui/material';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 import axios from 'axios';
+
+// Validation schema using Yup
+const validationSchema = Yup.object({
+  username: Yup.string().required('Username is required'),
+  email: Yup.string().email('Invalid email address').required('Email is required'),
+  password1: Yup.string().min(8, 'Password must be at least 8 characters').required('Password is required'),
+  password2: Yup.string()
+    .oneOf([Yup.ref('password1'), null], "Passwords don't match")
+    .required('Confirm Password is required'),
+});
 
 export default function SignupPage() {
   const navigate = useNavigate();
-  const [signupData, setSignupData] = useState({
-    username: '',
-    email: '',
-    password1: '',
-    password2: '',
-  });
 
-  const [errorMessage, setErrorMessage] = useState('');
-  const [message, setMessage] = useState('');
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setSignupData({
-      ...signupData,
-      [name]: value,
-    });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (signupData.password1 !== signupData.password2) {
-      setErrorMessage("Passwords didn't match");
-      return;
-    }
-
+  const handleSubmit = async (values, { setSubmitting, setErrors, setStatus }) => {
     // Prepare the data to be sent to the backend
     const userData = {
-      username: signupData.username,
-      email: signupData.email,
-      password: signupData.password1,
+      username: values.username,
+      email: values.email,
+      password: values.password1,
     };
 
     try {
       const response = await axios.post('http://127.0.0.1:8000/auth/signup/', userData);
-      setMessage(response.data.message);
-      setSignupData({
-        username: '',
-        email: '',
-        password1: '',
-        password2: '',
-      });
+      setStatus({ success: response.data.message });
       navigate('/login');
     } catch (error) {
-      setMessage(error.response.data.error);
+      setErrors({ submit: error.response.data.error });
     }
+    setSubmitting(false);
   };
 
   return (
-    <Grid container component="main" sx={{ height: '100vh', backgroundColor: '#f5f5f5' }}>
-      <Grid item xs={12} sm={6} md={6} display={{ xs: 'none', md: 'block' }}>
-        {/* Left Section - Image */}
-        <Box
-          component="img"
-          sx={{
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
+    <Box
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      sx={{ height: '100vh', backgroundColor: '#f5f5f5' }} 
+    >
+      <Box
+        display="flex"
+        flexDirection="column"
+        justifyContent="center"
+        alignItems="center"
+        sx={{ px: 3, width: '100%', maxWidth: 400 }}
+      >
+        {/* Signup Form using Formik */}
+        <Formik
+          initialValues={{
+            username: '',
+            email: '',
+            password1: '',
+            password2: '',
           }}
-          src="https://cdn.pixabay.com/photo/2017/07/31/18/29/laptop-2559792_640.jpg"
-          alt="Signup"
-        />
-      </Grid>
+          validationSchema={validationSchema}
+          onSubmit={handleSubmit}
+        >
+          {({ isSubmitting, status, errors }) => (
+            <Form>
+              <Typography component="h1" variant="h6" textAlign="center" mb={3} sx={{ fontWeight: 'bold' }}>
+                Sign Up
+              </Typography>
 
-      {/* Right Section - Signup Form */}
-      <Grid item xs={12} sm={6} md={6} display="flex" justifyContent="center" alignItems="center">
-        <Box sx={{ p: 4, width: '100%', maxWidth: 400 }}>
-          <Typography variant="h3" component="h3" sx={{ textAlign: 'center', mb: 3 }}>
-            Sign Up
-          </Typography>
+              {/* Error Message */}
+              {errors.submit && (
+                <Typography color="error" mb={2} textAlign="center">
+                  {errors.submit}
+                </Typography>
+              )}
 
-          <Typography color="error" sx={{ textAlign: 'center', mb: 2 }}>
-            {errorMessage}
-          </Typography>
-          <Typography color="success.main" sx={{ textAlign: 'center', mb: 2 }}>
-            {message}
-          </Typography>
+              {/* Success Message */}
+              {status && status.success && (
+                <Typography color="success.main" mb={2} textAlign="center">
+                  {status.success}
+                </Typography>
+              )}
 
-          <Box component="form" onSubmit={handleSubmit}>
-            {/* Username Input */}
-            <TextField
-              variant="outlined"
-              margin="normal"
-              fullWidth
-              id="username"
-              label="Create Username"
-              name="username"
-              value={signupData.username}
-              onChange={handleChange}
-              required
-            />
+              {/* Username Field */}
+              <Field
+                as={TextField}
+                variant="outlined"
+                margin="normal"
+                fullWidth
+                id="username"
+                label="Create Username"
+                name="username"
+                error={Boolean(errors.username)}
+                helperText={<ErrorMessage name="username" />}
+              />
 
-            {/* Email Input */}
-            <TextField
-              variant="outlined"
-              margin="normal"
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              type="email"
-              value={signupData.email}
-              onChange={handleChange}
-              required
-            />
+              {/* Email Field */}
+              <Field
+                as={TextField}
+                variant="outlined"
+                margin="normal"
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                type="email"
+                error={Boolean(errors.email)}
+                helperText={<ErrorMessage name="email" />}
+              />
 
-            {/* Password Input */}
-            <TextField
-              variant="outlined"
-              margin="normal"
-              fullWidth
-              id="password1"
-              label="Password"
-              name="password1"
-              type="password"
-              value={signupData.password1}
-              onChange={handleChange}
-              required
-            />
+              {/* Password Field */}
+              <Field
+                as={TextField}
+                variant="outlined"
+                margin="normal"
+                fullWidth
+                id="password1"
+                label="Password"
+                name="password1"
+                type="password"
+                error={Boolean(errors.password1)}
+                helperText={<ErrorMessage name="password1" />}
+              />
 
-            {/* Confirm Password Input */}
-            <TextField
-              variant="outlined"
-              margin="normal"
-              fullWidth
-              id="password2"
-              label="Confirm Password"
-              name="password2"
-              type="password"
-              value={signupData.password2}
-              onChange={handleChange}
-              required
-            />
+              {/* Confirm Password Field */}
+              <Field
+                as={TextField}
+                variant="outlined"
+                margin="normal"
+                fullWidth
+                id="password2"
+                label="Confirm Password"
+                name="password2"
+                type="password"
+                error={Boolean(errors.password2)}
+                helperText={<ErrorMessage name="password2" />}
+              />
 
-            {/* Submit Button */}
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Sign Up
-            </Button>
-          </Box>
+              {/* Signup Button */}
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                sx={{ mt: 3, mb: 2 }}
+                disabled={isSubmitting}
+              >
+                Sign Up
+              </Button>
 
-          <Box sx={{ textAlign: 'center', mt: 2 }}>
-            <Typography variant="body2">
-              Already have an account?{' '}
-              <Link to="/login" style={{ textDecoration: 'none', color: '#1976d2' }}>
-                Login
-              </Link>
-            </Typography>
-          </Box>
-        </Box>
-      </Grid>
-    </Grid>
+              {/* Link to Login */}
+              <Box sx={{ textAlign: 'center', mt: 2 }}>
+                <Typography variant="body2">
+                  Already have an account?{' '}
+                  <MuiLink component={Link} to="/login" underline="none" sx={{ color: '#1976d2' }}>
+                    Login
+                  </MuiLink>
+                </Typography>
+              </Box>
+            </Form>
+          )}
+        </Formik>
+      </Box>
+    </Box>
   );
 }

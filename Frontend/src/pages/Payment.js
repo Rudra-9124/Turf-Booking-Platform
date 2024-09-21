@@ -10,17 +10,41 @@ import {
 } from '@mui/material';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const PaymentPage = () => {
   const [paymentMode, setPaymentMode] = useState('upi'); // Set UPI as the default payment mode
   const [loading, setLoading] = useState(false); // State for loading
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { bookingData } = location.state || {}; // Retrieve booking data passed from VenueReviewPage
+  
+  const handlePaymentSuccess = async () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      alert('You need to log in first.');
+      return;
+    }
+    
+    try {
+      const response = await axios.post('http://localhost:8000/booking/', {
+        ...bookingData, // Include the booking data from VenueReviewPage
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      alert('Booking and payment successful!');
+      navigate('/');
+    } catch (error) {
+      console.error('There was an error processing the booking:', error.response.data);
+    }
+  };
+
   // Formik for UPI
   const formikUPI = useFormik({
-    initialValues: {
-      upiId: '',
-    },
+    initialValues: { upiId: '' },
     validationSchema: Yup.object({
       upiId: Yup.string()
         .required('UPI ID is required')
@@ -31,18 +55,15 @@ const PaymentPage = () => {
       setTimeout(() => {
         setLoading(false);
         alert(`UPI Payment Successful: ${values.upiId}`);
-        navigate('/')
+        handlePaymentSuccess()
+        navigate('/');
       }, 2000);
     },
   });
 
   // Formik for Credit/Debit Card
   const formikCard = useFormik({
-    initialValues: {
-      cardNumber: '',
-      expiryDate: '',
-      cvv: '',
-    },
+    initialValues: { cardNumber: '', expiryDate: '', cvv: '' },
     validationSchema: Yup.object({
       cardNumber: Yup.string()
         .required('Card number is required')
@@ -59,77 +80,81 @@ const PaymentPage = () => {
       setTimeout(() => {
         setLoading(false);
         alert(`Card Payment Successful: **** **** **** ${values.cardNumber.slice(-4)}`);
-        navigate('/')
+        handlePaymentSuccess()
+        navigate('/');
       }, 2000);
     },
   });
 
   // Formik for PayPal
   const formikPayPal = useFormik({
-    initialValues: {
-      email: '',
-    },
+    initialValues: { email: '' },
     validationSchema: Yup.object({
-      email: Yup.string()
-        .required('Email is required')
-        .email('Invalid email format'),
+      email: Yup.string().required('Email is required').email('Invalid email format'),
     }),
     onSubmit: (values) => {
       setLoading(true);
       setTimeout(() => {
         setLoading(false);
         alert(`PayPal Payment Successful: ${values.email}`);
-        navigate('/')
+        handlePaymentSuccess()
+        navigate('/');
       }, 2000);
     },
   });
 
   // Formik for Wallet
   const formikWallet = useFormik({
-    initialValues: {
-      walletId: '',
-    },
+    initialValues: { walletId: '' },
     validationSchema: Yup.object({
-      walletId: Yup.string()
-        .required('Wallet ID is required'),
+      walletId: Yup.string().required('Wallet ID is required'),
     }),
     onSubmit: (values) => {
       setLoading(true);
       setTimeout(() => {
         setLoading(false);
         alert(`Wallet Payment Successful: ${values.walletId}`);
-        navigate('/')
+        handlePaymentSuccess()
+        navigate('/');
       }, 2000);
     },
   });
 
   return (
-    <Box sx={{ padding: '40px 20px', backgroundColor: '#f0f2f5' }}>
+    <Box sx={{ padding: '40px 20px', backgroundColor: '#f5f5f5' }}>
       <Paper
         sx={{
           maxWidth: '800px',
           margin: '0 auto',
-          padding: '30px',
-          borderRadius: '8px',
-          boxShadow: 3,
-          backgroundColor: 'white',
+          padding: '40px',
+          borderRadius: '16px',
+          boxShadow: 5,
+          backgroundColor: '#ffffff',
         }}
       >
-        <Typography variant="h4" align="center" sx={{ fontWeight: 'bold', marginBottom: 3 }}>
+        <Typography
+          variant="h4"
+          align="center"
+          sx={{ fontWeight: 'bold', marginBottom: 4, color: '#333' }}
+        >
           Payment
         </Typography>
 
-        <Grid container spacing={2}>
+        <Grid container spacing={4}>
           {/* Left Side: Payment Mode Selection */}
           <Grid item xs={12} md={4}>
-            <Typography variant="h6" align="center" sx={{ fontWeight: '600', marginBottom: 2 }}>
+            <Typography
+              variant="h6"
+              align="center"
+              sx={{ fontWeight: 600, marginBottom: 3, color: '#555' }}
+            >
               Select Payment Mode
             </Typography>
             <Button
               variant={paymentMode === 'upi' ? 'contained' : 'outlined'}
               onClick={() => setPaymentMode('upi')}
               fullWidth
-              sx={{ marginBottom: 2 }}
+              sx={{ marginBottom: 2, backgroundColor: paymentMode === 'upi' ? '#1976d2' : 'white' }}
             >
               UPI
             </Button>
@@ -137,7 +162,7 @@ const PaymentPage = () => {
               variant={paymentMode === 'card' ? 'contained' : 'outlined'}
               onClick={() => setPaymentMode('card')}
               fullWidth
-              sx={{ marginBottom: 2 }}
+              sx={{ marginBottom: 2, backgroundColor: paymentMode === 'card' ? '#1976d2' : 'white' }}
             >
               Credit/Debit Card
             </Button>
@@ -145,7 +170,7 @@ const PaymentPage = () => {
               variant={paymentMode === 'paypal' ? 'contained' : 'outlined'}
               onClick={() => setPaymentMode('paypal')}
               fullWidth
-              sx={{ marginBottom: 2 }}
+              sx={{ marginBottom: 2, backgroundColor: paymentMode === 'paypal' ? '#1976d2' : 'white' }}
             >
               PayPal
             </Button>
@@ -153,6 +178,7 @@ const PaymentPage = () => {
               variant={paymentMode === 'wallet' ? 'contained' : 'outlined'}
               onClick={() => setPaymentMode('wallet')}
               fullWidth
+              sx={{ backgroundColor: paymentMode === 'wallet' ? '#1976d2' : 'white' }}
             >
               Wallet
             </Button>
@@ -173,16 +199,22 @@ const PaymentPage = () => {
                   helperText={formikUPI.touched.upiId && formikUPI.errors.upiId}
                   margin="normal"
                   variant="outlined"
+                  sx={{ paddingBottom: 2 }}
                 />
                 <Button
                   color="primary"
                   variant="contained"
                   type="submit"
                   fullWidth
-                  sx={{ marginTop: 2 }}
+                  sx={{
+                    marginTop: 2,
+                    padding: '12px',
+                    backgroundColor: '#1976d2',
+                    '&:hover': { backgroundColor: '#155a9e' },
+                  }}
                   disabled={loading}
                 >
-                  {loading ? <CircularProgress size={24} /> : 'Pay via UPI'}
+                  {loading ? <CircularProgress size={24} color="inherit" /> : 'Pay via UPI'}
                 </Button>
               </form>
             )}
@@ -200,6 +232,7 @@ const PaymentPage = () => {
                   helperText={formikCard.touched.cardNumber && formikCard.errors.cardNumber}
                   margin="normal"
                   variant="outlined"
+                  sx={{ paddingBottom: 2 }}
                 />
                 <Grid container spacing={2}>
                   <Grid item xs={6}>
@@ -237,10 +270,15 @@ const PaymentPage = () => {
                   variant="contained"
                   type="submit"
                   fullWidth
-                  sx={{ marginTop: 2 }}
+                  sx={{
+                    marginTop: 2,
+                    padding: '12px',
+                    backgroundColor: '#1976d2',
+                    '&:hover': { backgroundColor: '#155a9e' },
+                  }}
                   disabled={loading}
                 >
-                  {loading ? <CircularProgress size={24} /> : 'Pay via Card'}
+                  {loading ? <CircularProgress size={24} color="inherit" /> : 'Pay via Card'}
                 </Button>
               </form>
             )}
@@ -258,16 +296,22 @@ const PaymentPage = () => {
                   helperText={formikPayPal.touched.email && formikPayPal.errors.email}
                   margin="normal"
                   variant="outlined"
+                  sx={{ paddingBottom: 2 }}
                 />
                 <Button
                   color="primary"
                   variant="contained"
                   type="submit"
                   fullWidth
-                  sx={{ marginTop: 2 }}
+                  sx={{
+                    marginTop: 2,
+                    padding: '12px',
+                    backgroundColor: '#1976d2',
+                    '&:hover': { backgroundColor: '#155a9e' },
+                  }}
                   disabled={loading}
                 >
-                  {loading ? <CircularProgress size={24} /> : 'Pay via PayPal'}
+                  {loading ? <CircularProgress size={24} color="inherit" /> : 'Pay via PayPal'}
                 </Button>
               </form>
             )}
@@ -285,16 +329,22 @@ const PaymentPage = () => {
                   helperText={formikWallet.touched.walletId && formikWallet.errors.walletId}
                   margin="normal"
                   variant="outlined"
+                  sx={{ paddingBottom: 2 }}
                 />
                 <Button
                   color="primary"
                   variant="contained"
                   type="submit"
                   fullWidth
-                  sx={{ marginTop: 2 }}
+                  sx={{
+                    marginTop: 2,
+                    padding: '12px',
+                    backgroundColor: '#1976d2',
+                    '&:hover': { backgroundColor: '#155a9e' },
+                  }}
                   disabled={loading}
                 >
-                  {loading ? <CircularProgress size={24} /> : 'Pay via Wallet'}
+                  {loading ? <CircularProgress size={24} color="inherit" /> : 'Pay via Wallet'}
                 </Button>
               </form>
             )}

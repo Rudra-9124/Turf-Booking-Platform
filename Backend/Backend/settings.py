@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'Venues',
     'accounts',
-    'booking',
+    'Booking',
 ]
 
 MIDDLEWARE = [

@@ -9,12 +9,11 @@ const ProfilePage = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        // Fetch username from local storage
         const storedUsername = localStorage.getItem('username');
         if (storedUsername) {
             setUsername(storedUsername);
         }
-    }, []); // Run once on component mount
+    }, []);
 
     useEffect(() => {
         if (username) {
@@ -24,11 +23,11 @@ const ProfilePage = () => {
             const fetchBookings = async () => {
                 try {
                     const response = await axios.get('http://localhost:8000/booking/', { 
-                        params: { user: username }, // Pass username in query parameters
-                        withCredentials: true, // Ensure cookies are sent if using session authentication
+                        params: { user: username },
+                        withCredentials: true,
                         headers: {
                             'Content-Type': 'application/json',
-                            Authorization: `Bearer ${token}`, // Add token if required
+                            Authorization: `Bearer ${token}`, 
                         },
                     });
                     console.log(response.data);

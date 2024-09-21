@@ -113,19 +113,6 @@ const BookVenues = () => {
               alt={venue.name}
               sx={{ objectFit: 'cover' }}
             />
-            {/* <Box
-              sx={{
-                position: 'absolute',
-                top: 10,
-                left: 10,
-                backgroundColor: 'rgba(0, 0, 0, 0.6)',
-                color: 'white',
-                padding: '5px 10px',
-                borderRadius: '5px',
-              }}
-            >
-              <Typography variant="body2">{venue.type}</Typography> Bookable
-            </Box> */}
           </Box>
           <CardContent sx={{ textAlign: 'center' }}>
             <Typography variant="h6">{venue.name}</Typography>
