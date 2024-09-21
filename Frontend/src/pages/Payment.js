@@ -14,8 +14,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const PaymentPage = () => {
-  const [paymentMode, setPaymentMode] = useState('upi'); // Set UPI as the default payment mode
-  const [loading, setLoading] = useState(false); // State for loading
+  const [paymentMode, setPaymentMode] = useState('upi'); 
+  const [loading, setLoading] = useState(false); 
   const navigate = useNavigate();
   const location = useLocation();
   const { bookingData } = location.state || {}; // Retrieve booking data passed from VenueReviewPage

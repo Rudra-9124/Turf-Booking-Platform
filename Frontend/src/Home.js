@@ -87,7 +87,7 @@ const App = () => {
               <Box
                 sx={{
                   display: 'flex',
-                  flexWrap: 'wrap', // Allow wrapping for smaller screens
+                  flexWrap: 'wrap', 
                   justifyContent: 'space-between',
                   overflowX: 'hidden',
                 }}
