@@ -1,0 +1,21 @@
+{
+  "files": {
+    "main.css": "/turf-booking-platform/static/css/main.87b80360.css",
+    "main.js": "/turf-booking-platform/static/js/main.6033f1f5.js",
+    "static/js/453.a72cd0fe.chunk.js": "/turf-booking-platform/static/js/453.a72cd0fe.chunk.js",
+    "static/media/logo-removebg.png": "/turf-booking-platform/static/media/logo-removebg.07601f03efd8ca0fe327.png",
+    "static/media/home.webp": "/turf-booking-platform/static/media/home.c2d37ec8ef29d26f796b.webp",
+    "static/media/slick.svg": "/turf-booking-platform/static/media/slick.2630a3e3eab21c607e21.svg",
+    "static/media/slick.eot": "/turf-booking-platform/static/media/slick.a4e97f5a2a64f0ab1323.eot",
+    "static/media/slick.ttf": "/turf-booking-platform/static/media/slick.c94f7671dcc99dce43e2.ttf",
+    "static/media/slick.woff": "/turf-booking-platform/static/media/slick.295183786cd8a1389865.woff",
+    "index.html": "/turf-booking-platform/index.html",
+    "main.87b80360.css.map": "/turf-booking-platform/static/css/main.87b80360.css.map",
+    "main.6033f1f5.js.map": "/turf-booking-platform/static/js/main.6033f1f5.js.map",
+    "453.a72cd0fe.chunk.js.map": "/turf-booking-platform/static/js/453.a72cd0fe.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.87b80360.css",
+    "static/js/main.6033f1f5.js"
+  ]
+}
