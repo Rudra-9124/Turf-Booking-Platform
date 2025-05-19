@@ -29,9 +29,9 @@ const navItems = [
 
 function Navbar({ onLocationChange, window }) {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [location, setLocation] = useState('Ahmedabad'); // Default location
+  const [location, setLocation] = useState('Ahmedabad'); 
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('token')); // Check if user is logged in based on token
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate(); 
 
   // State for menu anchor
   const [anchorEl, setAnchorEl] = useState(null);

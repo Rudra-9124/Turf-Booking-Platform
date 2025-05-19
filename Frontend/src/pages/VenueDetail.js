@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Typography, Grid, Button, Card, CardMedia, CardContent, Breadcrumbs, Link, Rating, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { Box, Typography, Grid, Button, Card, CardMedia, Breadcrumbs, Link, Rating, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import ShareIcon from '@mui/icons-material/Share';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import XIcon from '@mui/icons-material/X';
@@ -12,7 +12,6 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import CheckCircleOutlineSharpIcon from '@mui/icons-material/CheckCircleOutlineSharp';
 import LeafletMap from '../components/LeafletMap'; // Adjust the path as needed
-import { Navigate } from 'react-router-dom';
 
 const VenueDetail = () => {
   const { id } = useParams();
@@ -79,7 +78,6 @@ const VenueDetail = () => {
     name,
     area,
     location,
-    price,
     image,
     facility,
     time,
@@ -104,7 +102,7 @@ const VenueDetail = () => {
                 {name}
               </Typography>
               <Typography variant="body1" gutterBottom>
-                {area} . Ratings: <Rating value={venue.rating} readOnly size="small" sx={{ mt: 1 }} />
+                {area} . Ratings: <Rating value={4} readOnly size="small" sx={{ mt: 1 }} />
                 <Button variant="text" sx={{ color: 'green', marginLeft: 1 }}>Rate Venue</Button>
               </Typography>
               <Card>

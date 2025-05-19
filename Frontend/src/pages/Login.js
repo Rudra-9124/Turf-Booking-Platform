@@ -110,9 +110,6 @@ export default function Login({ setUser }) {
 
           {/* Links for forgot password and sign up */}
           <Box display="flex" justifyContent="space-between">
-            <MuiLink component={Link} to="/forgotpass" underline="none">
-              Forgot password?
-            </MuiLink>
             <MuiLink component={Link} to="/register" underline="none">
               New user?
             </MuiLink>

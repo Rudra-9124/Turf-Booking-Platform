@@ -6,7 +6,7 @@ import Footer from '../components/Footer';
 
 const teamMembers = [
   {
-    name: 'Jignesh Solanki',
+    name: 'Rudra Patel',
     role: 'Founder',
     image: 'https://t4.ftcdn.net/jpg/06/40/07/03/360_F_640070383_9LJ3eTRSvOiwKyrmBYgcjhSlckDnNcxl.jpg',
   },

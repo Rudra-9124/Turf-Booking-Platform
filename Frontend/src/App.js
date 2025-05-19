@@ -1,6 +1,5 @@
 import {React , useState , useEffect} from 'react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Play from './pages/Play';
 import Book from './pages/Book';
 import About from './pages/About';
 import Contact from './pages/Contact';
@@ -30,7 +29,6 @@ function App() {
     <Router>
        <Routes>
          <Route path="/" element={<Home />} />
-         <Route path="/play" element={<Play />} />
          <Route path="/book" element={<Book />} />
          <Route path="/about" element={<About />} />
          <Route path="/contact" element={<Contact />} />

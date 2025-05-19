@@ -119,7 +119,7 @@ const BookVenues = () => {
             <Typography color="text.secondary">{venue.area}</Typography>
 
             {/* Rating Component */}
-            <Rating value={venue.rating} readOnly size="small" sx={{ mt: 1 }} />
+            <Rating value={4} readOnly size="small" sx={{ mt: 1 }} />
           </CardContent>
         </Card>
       ))}
