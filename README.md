@@ -9,7 +9,6 @@ The Turf Booking Platform is a web application that simplifies sports turf booki
 * **User Authentication:** Secure login/signup with Django’s authentication system.
 * **Turf Browsing & Slot Booking:** View available turfs and book slots with integrated payments.
 * **Admin & Owner Modules:** Manage turfs, bookings, and users with an admin panel.
-* **Responsive Design:** Mobile-friendly interface using React and Tailwind CSS.
 
 ## Technologies Used
 
